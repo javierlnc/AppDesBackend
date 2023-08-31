@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.example.model.*;
 import org.example.util.jwtTokenUtil;
 @RestController
+@CrossOrigin
 public class JwtAuthenticationController {
 
     @Autowired
@@ -23,8 +24,11 @@ public class JwtAuthenticationController {
     @PostMapping(value = "/authenticate")
     public ResponseEntity<?>createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
         final User user = authenticate(authenticationRequest);
-        final String token = jwtTokenUtil.generateToken(user);
-        return ResponseEntity.ok(new JwtResponse(token, user));
+        final JwtTokenUtil jwtTokenUtil = JwtTokenUtil.generateToken(user);
+        final String token = jwtTokenUtil.getToken();
+		Long expirationDate = jwtTokenUtil.getExpirationDateFromToken().getTime();
+
+        return ResponseEntity.ok(new JwtResponse(token, user, expirationDate));
 
     }
 

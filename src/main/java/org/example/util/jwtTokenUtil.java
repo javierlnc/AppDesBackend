@@ -50,12 +50,15 @@ public class jwtTokenUtil {
 		return claims;
 	}	
     private static String doGenerateToken(Map<String, Object> claims, String subject) {
-		return Jwts.builder()
+		String token = Jwts.builder()
 				.setClaims(claims)
 				.setSubject(subject)
 				.setIssuedAt(new Date(System.currentTimeMillis()))
 				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY))
 				.signWith(SignatureAlgorithm.HS512, SECRET).compact();
+		JwtTokenUtil jwtUtil = new JwtTokenUtil(token);
+		return jwtUtil;
+
 	}
 	public Boolean validateToken(UserDetails userDetails) {
 		final String username = getUsernameFromToken();
