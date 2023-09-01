@@ -11,9 +11,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.example.model.*;
-import org.example.util.jwtTokenUtil;
+import org.example.model.User;
+import org.example.model.JwtResponse;
+import org.example.model.JwtRequest;
+import org.example.util.JwtTokenUtil;
 @RestController
 @CrossOrigin
 public class JwtAuthenticationController {

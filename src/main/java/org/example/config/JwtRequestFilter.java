@@ -17,8 +17,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.careydevelopment.jwtguide.service.JwtUserDetailsService;
-import com.careydevelopment.jwtguide.util.JwtTokenUtil;
+import org.example.service.JwtUserDetailsService;
+import org.example.util.JwtTokenUtil;
+
 import io.jsonwebtoken.ExpiredJwtException;
 
 
@@ -29,19 +30,21 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
 
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
-        String usernme = null;
+        String username = null;
         String jwtToken = null;
 
         if(requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")){
             jwtToken = requestTokenHeader.substring(7);
             JwtTokenUtil jwtTokenUtil = new JwtTokenUtil(jwtToken);
             try {
-                usernme = jwtTokenUtil.getUsernameFromToken();
+                username = jwtTokenUtil.getUsernameFromToken();
                 validateToken(jwtTokenUtil, username, chain, request, response);
-            } catch (IllegalArgumentException e) {
+            }catch (IllegalArgumentException e) {
                 LOG.error("Unable to get JWT Token", e);
             }catch (ExpiredJwtException e){
                 LOG.error("JWT Token has expired", e);
+            } catch (SerialException e) {
+                LOG.error("Serial exceptiond", e);
             }
         }else {
             chain.doFilter(request, response);
@@ -61,7 +64,11 @@ public class JwtRequestFilter  extends OncePerRequestFilter {
                         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
 			}
         }
-        chain.doFilter(request, response);
+        try {
+            chain.doFilter(request, response);
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
     }
 
     

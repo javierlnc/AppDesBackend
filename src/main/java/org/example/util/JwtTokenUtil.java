@@ -9,14 +9,17 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.example.model.User;
 
-public class jwtTokenUtil {
+public class JwtTokenUtil {
     private static final long JWT_TOKEN_VALIDITY = 24 * 60 * 60 * 1000;
     public static final String SECRET = "mysecret";
     private String token = null;
 
     public JwtTokenUtil(String jwtToken) {
 		this.token = jwtToken;
-	}	
+	}
+	public String getToken() {
+	    return token;
+	}
 	public String getUsernameFromToken() {
 		return getClaimFromToken(Claims::getSubject);
 	}
@@ -38,7 +41,7 @@ public class jwtTokenUtil {
 		final Date expiration = getExpirationDateFromToken();
 		return expiration.before(new Date());
 	}	
-	public static String generateToken(User user) {
+	public static JwtTokenUtil generateToken(User user) {
 		Map<String, Object> claims = addClaims(user); 
 		return doGenerateToken(claims, user.getUsername());
 	}
@@ -49,7 +52,7 @@ public class jwtTokenUtil {
 		
 		return claims;
 	}	
-    private static String doGenerateToken(Map<String, Object> claims, String subject) {
+    private static JwtTokenUtil doGenerateToken(Map<String, Object> claims, String subject) {
 		String token = Jwts.builder()
 				.setClaims(claims)
 				.setSubject(subject)
