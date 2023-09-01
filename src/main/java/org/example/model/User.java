@@ -14,6 +14,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 @Entity
 public class User implements UserDetails{
     private static final long serialVersionUID = 3592549577903104696L;
+    
     @Id
     private String id;
 
