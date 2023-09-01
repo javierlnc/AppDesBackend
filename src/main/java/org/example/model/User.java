@@ -3,17 +3,20 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.persistence.Entity;
+import javax.persistence.Id;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
+@Entity
 public class User implements UserDetails{
     private static final long serialVersionUID = 3592549577903104696L;
-
+    @Id
     private String id;
+    
     private String firstName;
     private String lastName;
     private String phoneNumber;

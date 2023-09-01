@@ -22,12 +22,12 @@ import org.example.util.JwtTokenUtil;
 
 import io.jsonwebtoken.ExpiredJwtException;
 
-
+@Component
 public class JwtRequestFilter  extends OncePerRequestFilter {
     private static final Logger LOG = LoggerFactory.getLogger(JwtRequestFilter.class);
     @Autowired
 	private JwtUserDetailsService jwtUserDetailsService;
-
+    @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
         final String requestTokenHeader = request.getHeader("Authorization");
         String username = null;
