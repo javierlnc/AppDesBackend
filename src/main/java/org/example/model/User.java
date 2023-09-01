@@ -16,7 +16,7 @@ public class User implements UserDetails{
     private static final long serialVersionUID = 3592549577903104696L;
     @Id
     private String id;
-    
+
     private String firstName;
     private String lastName;
     private String phoneNumber;
